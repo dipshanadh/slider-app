@@ -1,20 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaQuoteRight } from "react-icons/fa";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-import { list, longList, shortList } from "../data";
+import { list as people } from "../data";
 
 const Slider = () => {
-  const [people, setPeople] = useState(longList);
   const [current, setCurrent] = useState(0);
 
   const prevSlide = () => {
-    setCurrent((current - 1 + people.length) % people.length);
+    setCurrent(prevCurr => (prevCurr - 1 + people.length) % people.length);
   };
 
   const nextSlide = () => {
-    setCurrent((current + 1) % people.length);
+    setCurrent(prevCurr => (prevCurr + 1) % people.length);
   };
+
+  useEffect(() => {
+    const sliderInterval = setInterval(() => nextSlide(), 2000);
+
+    return () => clearInterval(sliderInterval);
+  }, [current]);
 
   return (
     <div className="slider-container">
